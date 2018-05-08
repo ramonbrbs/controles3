@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xForms="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
              xmlns:controleApp="clr-namespace:ControleApp;assembly=ControleApp"
+             xmlns:xForms1="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              x:Class="ControleApp.Views.NovaTarefa"
              Title="TAREFAS">
 
@@ -70,10 +71,29 @@
                 </Grid>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" Margin="5,0,10,0">
+            <StackLayout Orientation="Vertical" Margin="5,0,10,0" VerticalOptions="FillAndExpand">
                 <Label Margin="5,5,0,5" Text="Anexos:"></Label>
 
                 <Button Text="Adicionar Arquivo" x:Name="BtnAnexar" Clicked="BtnAnexar_OnClicked"></Button>
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" x:Name="StckList">
+                    <xForms1:SfListView  x:Name="Lst" AutoFitMode="Height"  VerticalOptions="FillAndExpand"   ColumnSpacing="10" SelectionBackgroundColor="#2196F3" HorizontalOptions="FillAndExpand" >
+
+                        <xForms1:SfListView.LayoutManager>
+                            <xForms1:GridLayout SpanCount="1"   />
+
+                        </xForms1:SfListView.LayoutManager>
+
+                        <xForms1:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding FileName}" VerticalOptions="Center"></Label>
+                                    <Button Text="X" Height="20" BackgroundColor="Transparent" TextColor="Red" HorizontalOptions="EndAndExpand" Clicked="Button_OnClicked" CommandParameter="{Binding FilePath}"></Button>
+                                </StackLayout>
+                            </DataTemplate>
+                        </xForms1:SfListView.ItemTemplate>
+                    </xForms1:SfListView>
+                </StackLayout>
+                
             </StackLayout>
 
             <StackLayout Margin="0,10,0,0">

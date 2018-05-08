@@ -35,61 +35,76 @@ namespace ControleApp.Views
         }
 
         private List<Usuario> usuarios;
+
+        private bool flagAberto = true;
         protected override async void OnAppearing()
         {
 
-            usuarios = await UsuarioRN.GetUsuarios(Session.Usuario.Usw_cod.ToString(), "123", Session.Usuario.Perfil);
-            PckCliente.ItemsSource = await ClienteRN.GetClientes();
-            PckPara.ItemsSource = usuarios;
-
-            var tipos = await TarefasRN.GetTipo();
-            PckTipo.ItemsSource = tipos;
-            PckTipo.SelectedItem = tipos.Where(t => t.TarefaTipo.ToUpper().Contains("AGENDA")).FirstOrDefault();
-            List<String> acoes = new List<string>();
-            acoes.Add("      Incluir ");
-            acoes.Add("Ler / Aceitar ");
-            acoes.Add("       Baixar ");
-            acoes.Add("      Validar ");
-            PckAcao.ItemsSource = acoes;
-            PckAcao.SelectedIndex = 0;
-            if (tarefa != null)
+            if (!flagAberto)
             {
-                PckCliente.SelectedItem = ((List<Cliente>)PckCliente.ItemsSource).FirstOrDefault(c => c.Id == tarefa.CLIENTE);
-                TxtDataFim.Date = tarefa.DATA_PROGR;
-                PckPara.SelectedItem = ((List<Usuario>)PckPara.ItemsSource).FirstOrDefault(c => c.Usw_cod == tarefa.RESPOSAVEL);
-                //var usuario = await UsuarioRN.GetUsuario(((Usuario)PckPara.SelectedItem).Usw_Usuario.ToString(), "123");
-                //usu = PckPara.SelectedItem;
-                PckTipo.SelectedItem = tipos.FirstOrDefault(t => t.TarefaTipo.Contains("Tarefa"));
-                TxtTexto.Text = tarefa.HISTORICO;
-                PckAcao.SelectedIndex = tarefa.Pgr_Fase;
-                //TxtTexto.IsVisible = false;
-                //ScrollEditor.ScrollToAsync(0, 0, false);
-                if (tarefa.tarefasAnot != null)
-                {
-                    var listavm = new List<ListaVM>();
-                    minhasAnot = tarefa.tarefasAnot;
-                    if (minhasAnot.Count > 0)
-                    {
-                        //TxtTexto.Text += "\r\n\r\n Possui Anotações ";
-                        TxtAnot.Text = "Anotações";
-                        TxtAnot.IsVisible = true;
-                    }
-                    else
-                    {
-                        TxtAnot.IsVisible = false;
-                    }
-                    foreach (var l in minhasAnot)
-                    {
-                        var itemm = new ListaVM() { Id_Anot = l.ID_Anot, Anot_DataAnot = l.Anot_DataAnot.ToString("dd/MM/yyyy"), Anot_histor = l.Anot_histor };
-                        listavm.Add(itemm);
-                        //TxtTexto.Text += "\r\n\r\n " + l.Anot_DataAnot.ToString("dd/MM/yyyy") + " - " + l.Anot_histor;
-                    }
+                return;}
+            try
+            {
+                usuarios = await UsuarioRN.GetUsuarios(Session.Usuario.Usw_cod.ToString(), "123", Session.Usuario.Perfil);
+                PckCliente.ItemsSource = await ClienteRN.GetClientes();
+                PckPara.ItemsSource = usuarios;
 
-                    ListaAnot.ItemsSource = listavm;
+                var tipos = await TarefasRN.GetTipo();
+                PckTipo.SelectedItem = null;
+                PckTipo.ItemsSource = tipos;
+                PckTipo.SelectedItem = tipos.Where(t => t.TarefaTipo.ToUpper().Contains("AGENDA")).FirstOrDefault();
+                List<String> acoes = new List<string>();
+                acoes.Add("      Incluir ");
+                acoes.Add("Ler / Aceitar ");
+                acoes.Add("       Baixar ");
+                acoes.Add("      Validar ");
+                PckAcao.ItemsSource = acoes;
+                PckAcao.SelectedIndex = 0;
+                if (tarefa != null)
+                {
+                    PckCliente.SelectedItem = ((List<Cliente>)PckCliente.ItemsSource).FirstOrDefault(c => c.Id == tarefa.CLIENTE);
+                    TxtDataFim.Date = tarefa.DATA_PROGR;
+                    PckPara.SelectedItem = ((List<Usuario>)PckPara.ItemsSource).FirstOrDefault(c => c.Usw_cod == tarefa.RESPOSAVEL);
+                    //var usuario = await UsuarioRN.GetUsuario(((Usuario)PckPara.SelectedItem).Usw_Usuario.ToString(), "123");
+                    //usu = PckPara.SelectedItem;
+                    PckTipo.SelectedItem = tipos.FirstOrDefault(t => t.TarefaTipo.Contains("Tarefa"));
+                    TxtTexto.Text = tarefa.HISTORICO;
+                    PckAcao.SelectedIndex = tarefa.Pgr_Fase;
+                    //TxtTexto.IsVisible = false;
+                    //ScrollEditor.ScrollToAsync(0, 0, false);
+                    if (tarefa.tarefasAnot != null)
+                    {
+                        var listavm = new List<ListaVM>();
+                        minhasAnot = tarefa.tarefasAnot;
+                        if (minhasAnot.Count > 0)
+                        {
+                            //TxtTexto.Text += "\r\n\r\n Possui Anotações ";
+                            TxtAnot.Text = "Anotações";
+                            TxtAnot.IsVisible = true;
+                        }
+                        else
+                        {
+                            TxtAnot.IsVisible = false;
+                        }
+                        foreach (var l in minhasAnot)
+                        {
+                            var itemm = new ListaVM() { Id_Anot = l.ID_Anot, Anot_DataAnot = l.Anot_DataAnot.ToString("dd/MM/yyyy"), Anot_histor = l.Anot_histor };
+                            listavm.Add(itemm);
+                            //TxtTexto.Text += "\r\n\r\n " + l.Anot_DataAnot.ToString("dd/MM/yyyy") + " - " + l.Anot_histor;
+                        }
+
+                        ListaAnot.ItemsSource = listavm;
+
+                    }
 
                 }
-
             }
+            catch (Exception e)
+            {
+                await DisplayAlert("Erro", e.Message, "ok");
+            }
+            flagAberto = false;
+
         }
 
         private void Menu_clicked(object sender, EventArgs e)
@@ -321,19 +336,47 @@ namespace ControleApp.Views
             Session.Navigation.Navigation.PushAsync(new Anotacao(tarefa, ta));
         }
 
-
+        private List<FileData> anexos = new List<FileData>();
         private async void BtnAnexar_OnClicked(object sender, EventArgs e)
         {
             try
             {
-                var crossFilePicker = Plugin.FilePicker.CrossFilePicker.Current;
-                var myData = await crossFilePicker.PickFile();
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData != null)
+                {
+                    anexos.Add(fileData);
+
+                    AutalizarAnexos();
+                }
+                //Byte[] byteArray = fileData.DataArray; // when i select pdf or doc from GoogleDrive Its getting DataArray = empty;//
+                
             }
             catch (Exception exception)
             {
-                throw exception;
+
             }
             
+        }
+
+        private void AutalizarAnexos()
+        {
+            Lst.HeightRequest = 400 * anexos.Count;
+            Lst.ItemsSource = null;
+            Lst.ItemsSource = anexos;
+        }
+        
+
+        private void RemoveFile_Tapped(object sender, EventArgs e)
+        {
+            
+
+        }
+
+        private void Button_OnClicked(object sender, EventArgs e)
+        {
+            var path = (String)((Button) sender).CommandParameter;
+            anexos.Remove(anexos.First(a => a.FilePath == path));
+            AutalizarAnexos();
         }
     }
 }
