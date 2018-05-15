@@ -114,8 +114,7 @@
                     </StackLayout>
                     <StackLayout HorizontalOptions="FillAndExpand" x:Name="GrdAnexar" >
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer
-                            />
+                            <TapGestureRecognizer Tapped="ArquivoTap" />
                         </StackLayout.GestureRecognizers>
                         <Image WidthRequest="42" HeightRequest="42" Source="icone_arquivos_marron.png"></Image>
                         <Label Text="Enviar Arquivos" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"></Label>

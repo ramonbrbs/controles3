@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ControleApp.Views.EnvioArquivo" Title="Enviar Arquivo">
+    <ContentPage.Content>
+        <StackLayout Margin="15" Spacing="15">
+            <StackLayout x:Name="StckTarefa" Orientation="Horizontal" IsVisible="False">
+                <Label Text="Tarefa:"></Label>
+                <Label Text="" x:Name="LblTarefa"></Label>
+            </StackLayout>
+
+            <StackLayout x:Name="StckSelecao" Orientation="Horizontal">
+                <Label Text="Arquivo: " LineBreakMode="NoWrap" VerticalOptions="Center"></Label>
+                <Label Text="" x:Name="LblNomeArquivo" VerticalOptions="Center"></Label>
+                <Button Text="Selecionar..." Clicked="Selecionar_Clicked" VerticalOptions="Center"></Button>
+            </StackLayout>
+
+            <StackLayout x:Name="StckDescricao" Orientation="Horizontal">
+                <Label Text="Descrição: " VerticalOptions="Center"></Label>
+                <StackLayout BackgroundColor="White" HorizontalOptions="FillAndExpand"  Margin="10,0,10,0">
+                    <StackLayout BackgroundColor="DarkGray" Padding="1">
+                        <Editor FontSize="Small" HeightRequest="80" MinimumHeightRequest="80"  HorizontalOptions="FillAndExpand"   x:Name="TxtTexto"  VerticalOptions="FillAndExpand"  BackgroundColor="White">
+                        </Editor>
+                    </StackLayout>
+                </StackLayout>
+                
+                
+
+            </StackLayout>
+            <Button Text="Enviar" Margin="0,15,0,0"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

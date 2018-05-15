@@ -160,5 +160,10 @@ namespace ControleApp.Views
         {
             
         }
+
+        private void ArquivoTap(object sender, EventArgs e)
+        {
+            Session.Navigation.Navigation.PushAsync(new EnvioArquivo());
+        }
     }
 }

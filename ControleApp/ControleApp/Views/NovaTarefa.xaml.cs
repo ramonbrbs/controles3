@@ -29,6 +29,10 @@ namespace ControleApp.Views
             {
                 tarefa = t;
             }
+            else
+            {
+                BtnAnexar.IsEnabled = false;
+            }
             TxtHoraFim.Text = DateTime.Now.ToString("HH:mm");
             NavigationPage.SetHasBackButton(this, false);
 
@@ -182,6 +186,7 @@ namespace ControleApp.Views
                 var retorno = await TarefasRN.Cadastrar(t);
                 if (String.IsNullOrEmpty(retorno))
                 {
+                    BtnAnexar.IsEnabled = true;
                     StckSucesso.IsVisible = true;
                     if (t.Pgr_Fase == 1)
                     {
@@ -341,15 +346,8 @@ namespace ControleApp.Views
         {
             try
             {
-                FileData fileData = await CrossFilePicker.Current.PickFile();
-                if (fileData != null)
-                {
-                    anexos.Add(fileData);
+                Session.Navigation.Navigation.PushAsync(new EnvioArquivo(tarefa.CodPro));
 
-                    AutalizarAnexos();
-                }
-                //Byte[] byteArray = fileData.DataArray; // when i select pdf or doc from GoogleDrive Its getting DataArray = empty;//
-                
             }
             catch (Exception exception)
             {
