@@ -10,7 +10,20 @@ namespace ControleApp.Webservice
 {
     public class TarefasWS
     {
+        public static async Task<bool> EnviarArquivo(Arquivo a)
+        {
+            try
+            {
+                string url = "http://vm01.bulgart.com:5006/Api/Arquivo";
+                var req = new Request(url);
 
+                return await req.Post<bool>(a);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
         public async static Task<string> Cadastrar(Tarefas t)
         {
             try

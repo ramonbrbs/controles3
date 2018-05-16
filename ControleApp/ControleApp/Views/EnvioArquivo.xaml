@@ -15,6 +15,23 @@
                 <Button Text="Selecionar..." Clicked="Selecionar_Clicked" VerticalOptions="Center"></Button>
             </StackLayout>
 
+            <StackLayout Orientation="Horizontal" Margin="5,0,10,0">
+                <Label Margin="5,5,0,5" Text="Cliente:"></Label>
+
+                <Grid HorizontalOptions="StartAndExpand" Margin="0,5,5,5">
+                    <Picker x:Name="PckCliente" IsVisible="False"
+                            SelectedIndexChanged="PckCliente_OnSelectedIndexChanged">
+                    </Picker>
+
+                    <Label x:Name="PickerLabelCliente" Text="Selecione um Cliente"
+                           FontSize="16" FontAttributes="Bold" HorizontalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </StackLayout>
+
             <StackLayout x:Name="StckDescricao" Orientation="Horizontal">
                 <Label Text="Descrição: " VerticalOptions="Center"></Label>
                 <StackLayout BackgroundColor="White" HorizontalOptions="FillAndExpand"  Margin="10,0,10,0">
@@ -27,7 +44,7 @@
                 
 
             </StackLayout>
-            <Button Text="Enviar" Margin="0,15,0,0"></Button>
+            <Button Text="Enviar" Margin="0,15,0,0" Clicked="Enviar_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
