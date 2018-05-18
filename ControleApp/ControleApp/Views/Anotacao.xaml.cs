@@ -178,7 +178,7 @@ namespace ControleApp.Views
         //}
         private void BtnAnexar_OnClicked(object sender, EventArgs e)
         {
-            Session.Navigation.Navigation.PushAsync(new EnvioArquivo());
+            Session.Navigation.Navigation.PushAsync(new EnvioArquivo(codTarefa: tarefa?.CodPro));
         }
     }
 
