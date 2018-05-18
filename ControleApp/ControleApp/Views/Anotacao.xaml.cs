@@ -176,6 +176,10 @@ namespace ControleApp.Views
         //{
         //    PickerLabel.Text = PckPara.Items[PckPara.SelectedIndex];
         //}
+        private void BtnAnexar_OnClicked(object sender, EventArgs e)
+        {
+            Session.Navigation.Navigation.PushAsync(new EnvioArquivo());
+        }
     }
 
 }

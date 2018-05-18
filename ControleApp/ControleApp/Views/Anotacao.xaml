@@ -55,6 +55,8 @@
                 </StackLayout>
             </StackLayout>
 
+            <Button Margin="10,0,0,0" Text="Adicionar Arquivo" x:Name="BtnAnexar" Clicked="BtnAnexar_OnClicked"></Button>
+
 
             <StackLayout Margin="0,10,0,0">
 

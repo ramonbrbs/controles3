@@ -14,7 +14,7 @@ namespace ControleApp.Webservice
         {
             try
             {
-                string url = "http://vm01.bulgart.com:5006/Api/Arquivo";
+                string url = "http://vm01.bulgart.com:5000/Api/Arquivo";
                 var req = new Request(url);
 
                 return await req.Post<bool>(a);
